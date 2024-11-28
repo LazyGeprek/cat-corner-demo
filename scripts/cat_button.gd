@@ -1,7 +1,5 @@
 extends StaticBody2D
 
-var current_score = 0
-var auto_click = 1
 var cat_scratcher = false
 @onready var click_sound = $ClickSound
 @onready var autoclick_sound = $AutoClickSound
@@ -13,10 +11,9 @@ func _on_input_event(viewport, event, shape_idx):
 			print("works")
 
 func addScore():
-	current_score += auto_click
+	get_parent().current_score += get_parent().auto_click
 
 func cat_button_clicked():
-	current_score += 1 
 	get_parent().load_new_score()
 	click_sound.play()
 
@@ -33,8 +30,7 @@ func _on_cat_scratcher_pressed():
 	$"../CatScratcherUp".disabled = false
 	$"../CatScratcherUp".show()
 
-
 func _on_cat_scratcher_up_pressed():
-	auto_click *= 2
+	get_parent().auto_click *= 2
 	$"../CatScratcherUp".disabled = true
 	$"../CatScratcherUp".hide()

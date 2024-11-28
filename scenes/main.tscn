@@ -1,0 +1,106 @@
+[gd_scene load_steps=10 format=3 uid="uid://b6rvlkgnxixem"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_06gj8"]
+[ext_resource type="Script" path="res://scripts/cat_button.gd" id="2_1nydk"]
+[ext_resource type="Texture2D" uid="uid://dfyij5ggu24s2" path="res://assets/ClickyCat_Temp.png" id="3_bb873"]
+[ext_resource type="AudioStream" uid="uid://b2j1bqmto015g" path="res://assets/Click 2.wav" id="4_2jhpb"]
+[ext_resource type="AudioStream" uid="uid://di2r2minnuj7k" path="res://assets/Rainy_Streets.mp3" id="5_dnsp0"]
+[ext_resource type="AudioStream" uid="uid://dbv6d6iurbmtv" path="res://assets/chinese doit.wav" id="5_x7l5e"]
+[ext_resource type="Texture2D" uid="uid://8224w2b8xadi" path="res://assets/Cat Scatcher Upgrades/CC1_CatScratcher_Upgrade_0.png" id="6_r0iqm"]
+[ext_resource type="Texture2D" uid="uid://s78ck4n5pxga" path="res://assets/Cat Scatcher Upgrades/CC1_CatScratcher_Upgrade_9.png" id="7_o5q37"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dq3jn"]
+radius = 147.167
+
+[node name="Main" type="Node"]
+script = ExtResource("1_06gj8")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.596063, 0.683109, 0.930353, 1)
+
+[node name="Score" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -499.0
+offset_top = -66.0
+offset_right = -456.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 75
+text = "0"
+
+[node name="CatButton" type="StaticBody2D" parent="."]
+position = Vector2(160, 550)
+input_pickable = true
+script = ExtResource("2_1nydk")
+metadata/_edit_group_ = true
+
+[node name="CatButtonShape" type="CollisionShape2D" parent="CatButton"]
+shape = SubResource("CircleShape2D_dq3jn")
+debug_color = Color(0.9967, 0, 0.181514, 0.42)
+
+[node name="Cat" type="Sprite2D" parent="CatButton/CatButtonShape"]
+position = Vector2(12, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_bb873")
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="CatButton"]
+stream = ExtResource("4_2jhpb")
+volume_db = -12.0
+
+[node name="AutoClickSound" type="AudioStreamPlayer" parent="CatButton"]
+stream = ExtResource("5_x7l5e")
+volume_db = -12.0
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_dnsp0")
+volume_db = -5.0
+parameters/looping = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+
+[node name="CatScratcher" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 0.783
+anchor_top = 0.033
+anchor_right = 0.945
+anchor_bottom = 0.322
+offset_left = -0.240051
+offset_top = 0.24
+offset_right = 0.399902
+offset_bottom = 0.159973
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("6_r0iqm")
+
+[node name="CatScratcherUp" type="Button" parent="."]
+visible = false
+anchors_preset = -1
+anchor_left = 0.783
+anchor_top = 0.033
+anchor_right = 0.945
+anchor_bottom = 0.322
+offset_left = -0.240051
+offset_top = 0.24
+offset_right = 0.399902
+offset_bottom = 0.159973
+grow_horizontal = 2
+grow_vertical = 2
+disabled = true
+icon = ExtResource("7_o5q37")
+
+[connection signal="input_event" from="CatButton" to="CatButton" method="_on_input_event"]
+[connection signal="timeout" from="Timer" to="CatButton" method="_on_timer_timeout"]
+[connection signal="pressed" from="CatScratcher" to="CatButton" method="_on_cat_scratcher_pressed"]
+[connection signal="pressed" from="CatScratcherUp" to="CatButton" method="_on_cat_scratcher_up_pressed"]
